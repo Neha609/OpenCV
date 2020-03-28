@@ -1,0 +1,29 @@
+import cv2
+import numpy
+
+#This will start capturing from camera
+cap = cv2.VideoCapture(0)
+
+# Define the codec and create VideoWriter object
+fourcc = cv2.VideoWriter_fourcc(*'XVID')
+out = cv2.VideoWriter('MyVideo.avi',fourcc, 20.0, (640,480))
+
+#This will capture frames of Video
+while(True):
+    ret, frame = cap.read()
+# It will convert frame to gray
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    
+# write the flipped frame
+    out.write(frame)
+# It will show the gray frame
+    cv2.imshow('frame',gray)
+# When you press 'q' key then it will exit from while loop
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+        
+# Release everything if job is finished
+cap.release()
+out.release()
+#It will destroy all running objects
+cv2.destroyAllWindows()
