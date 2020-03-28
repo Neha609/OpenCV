@@ -1,0 +1,35 @@
+import cv2
+import numpy as np
+
+####### Loading Image #######
+#For reading Image
+img = cv2.imread('Neha.jpg', cv2.IMREAD_GRAYSCALE)
+#It will show the image
+cv2.imshow('image',img)
+#It will open the window and wait until you will not press any key
+cv2.waitKey(0)
+#It will destroy all running objects
+cv2.destroyAllWindows()
+#It will save the image
+cv2.imwrite('Nehagray.jpg',img)
+
+####### Loading Video Source #######
+#This will return vedio from first webcam from this computer
+cap = cv2.VideoCapture(0)
+
+#This code initiates an infinite loop (to be broken later by a break statement),where we have ret and frame being defined as the cap.read().
+# Basically, ret is a boolean regarding whether or not there was a return at all,at the frame is each frame that is returned.
+# If there is no frame, you wont get an error, you will get None.
+while (True):
+    ret, frame = cap.read()
+    
+# It will convert frame to gray
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+#It will show the gray frame
+    cv2.imshow('frame', gray)
+#When you press 'q' key then it will exit from while loop
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+#This releases the webcam, then closes all of the imshow() windows.
+cap.release()
+cv2.destroyAllWindows()
