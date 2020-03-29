@@ -1,0 +1,28 @@
+import cv2
+import numpy as np
+
+img = cv2.imread('Neha.jpg',cv2.IMREAD_COLOR)
+#referencing specific pixel
+px = img[55,55]
+#Chnanging pixel
+img[55,55] = [255,255,255]
+#Re-referencing pixel
+px = img[55,55]
+print(px)
+#here we are referencing ROI (Region of Interest)
+px = img[100:150,100:150]
+print(px)
+#Modifying region of Interest
+img[100:150,100:150] = [255,255,255]
+#just for checking certain characterstics of Image
+print(img.shape)
+print(img.size)
+print(img.dtype)
+
+#Performing Image Operation
+Neha_face = img[37:111,107:194]
+img[0:74,0:87] = Neha_face
+
+cv2.imshow('image',img)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
