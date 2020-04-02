@@ -3,12 +3,28 @@ import numpy as np
 
 #Reading image
 img = cv2.imread('bookpage.jpg')
-#Applying Threshold
+#  METHOD --- 1
+#Applying Threshold (will be easy to see picture now but still extracting written words is not easy)
 retval, threshold = cv2.threshold(img, 12, 255, cv2.THRESH_BINARY)
+
+# METHOD --- 2
+# First applying Grayscale on Image and then will do Threshold
+grayscaled = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+retval, threshold = cv2.threshold(grayscaled, 10, 255, cv2.THRESH_BINARY)
+
+# METHOD --- 3
+#Now applying adaptive threshold here
+threshold = cv2.adaptiveThreshold(grayscaled, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 115, 1)
+
+# METHOD --- 3
+#Applying another threshold named 'Otsu threshold' but it does't work well
+retval2,threshold = cv2.threshold(grayscaled,125,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
+
 #It will show original image
 cv2.imshow('original',img)
 #It will show thresholded image
 cv2.imshow('threshold',threshold)
+
 #It will open the window and wait until you will not press any key
 cv2.waitKey(0)
 #It will destroy all running objects
