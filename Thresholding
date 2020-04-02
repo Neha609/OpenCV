@@ -1,0 +1,15 @@
+import cv2
+import numpy as np
+
+#Reading image
+img = cv2.imread('bookpage.jpg')
+#Applying Threshold
+retval, threshold = cv2.threshold(img, 12, 255, cv2.THRESH_BINARY)
+#It will show original image
+cv2.imshow('original',img)
+#It will show thresholded image
+cv2.imshow('threshold',threshold)
+#It will open the window and wait until you will not press any key
+cv2.waitKey(0)
+#It will destroy all running objects
+cv2.destroyAllWindows()
