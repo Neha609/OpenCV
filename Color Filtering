@@ -1,0 +1,29 @@
+import cv2
+import numpy as np
+#Start Capturing
+cap = cv2.VideoCapture(0)
+#This code initiates an infinite loop (to be broken later by a break statement)
+while (1):
+    _, frame = cap.read()
+    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+#Providing color range
+    lower_red = np.array([30, 150, 50])
+    upper_red = np.array([255, 255, 180])
+#Creating Mask with color range
+    mask = cv2.inRange(hsv, lower_red, upper_red)
+#Applying bitwise operation with mask in final result
+    res = cv2.bitwise_and(frame, frame, mask=mask)
+
+#These statement will show original frame ,mask and Final Results
+    cv2.imshow('frame', frame)
+    cv2.imshow('mask', mask)
+    cv2.imshow('res', res)
+
+#Terminating while loop
+    k = cv2.waitKey(5) & 0xFF
+    if k == 27:
+        break
+
+#Destrying and releasing all resourses
+cv2.destroyAllWindows()
+cap.release()
