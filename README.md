@@ -1,2 +1,2 @@
 # OpenCV
-Making Familiar with OpenCV Library
+Getting Familiar with OpenCV Library
