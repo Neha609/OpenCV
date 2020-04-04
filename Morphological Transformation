@@ -1,0 +1,49 @@
+import cv2
+import numpy as np
+
+#This will start capturing video
+cap = cv2.VideoCapture(0)
+
+#starting While loop for capturing frames and performing operation on it
+while (1):
+
+    _, frame = cap.read()
+    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+# Providing color range
+    lower_red = np.array([30, 150, 50])
+    upper_red = np.array([255, 255, 180])
+# Creating Mask with color range
+    mask = cv2.inRange(hsv, lower_red, upper_red)
+# Applying bitwise operation with mask to get final result
+    res = cv2.bitwise_and(frame, frame, mask=mask)
+# a 5 x 5 square filter
+    kernel = np.ones((5, 5), np.uint8)
+# Performing Erosion transformation
+    erosion = cv2.erode(mask, kernel, iterations=1)
+# Performing Dilate transformation
+    dilation = cv2.dilate(mask, kernel, iterations=1)
+
+# Showing another transformation method opening and closing
+# Performing Opening transformation
+     opening = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
+# Performing Closing Operation
+     closing = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
+
+    # It is the difference between input image and Opening of the image
+    #cv2.imshow('Tophat',tophat)
+    # It is the difference between the closing of the input image and input image.
+    #cv2.imshow('Blackhat',blackhat)
+
+#Showing Original frame video , Masked video, erosion video, dilation video
+    cv2.imshow('Original', frame)
+    cv2.imshow('Mask', mask)
+    cv2.imshow('Erosion', erosion)
+    cv2.imshow('Dilation', dilation)
+
+    # Terminating while loop
+    k = cv2.waitKey(5) & 0xFF
+    if k == 27:
+        break
+#Destrying and releasing all resourses
+cv2.destroyAllWindows()
+cap.release()
