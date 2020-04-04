@@ -1,0 +1,41 @@
+import cv2
+import numpy as np
+#Start Capturing
+cap = cv2.VideoCapture(0)
+#This code initiates an infinite loop (to be broken later by a break statement)
+while (1):
+    _, frame = cap.read()
+    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+#Providing color range
+    lower_red = np.array([30, 150, 50])
+    upper_red = np.array([255, 255, 180])
+#Creating Mask with color range
+    mask = cv2.inRange(hsv, lower_red, upper_red)
+# Applying bitwise operation with mask in final result
+    res = cv2.bitwise_and(frame, frame, mask=mask)
+# Applying simple smothening , where we do a sort of averaging per block of pixels.
+    # a 15 x 15 square, which means we have 225 total pixels.
+    kernel = np.ones((15,15),np.float32)/225
+#Smothening the resultent image
+    smoothed = cv2.filter2D(res,-1,kernel)
+#As above method will not give proper image so applying Gaussian Blurring
+    blur = cv2.GaussianBlur(res,(15,15),0)
+    cv2.imshow('Gaussian Blurring',blur)
+#Let's try median blur as well
+    median = cv2.medianBlur(res, 15)
+    cv2.imshow('Median Blur', median)
+#Another option is bilateral blur
+    bilateral = cv2.bilateralFilter(res, 15, 75, 75)
+    cv2.imshow('bilateral Blur', bilateral)
+    
+#Showing Original frame as well as smothened frame
+    cv2.imshow('Original',frame)
+    cv2.imshow('Averaging',smoothed)
+
+    # Terminating while loop
+    k = cv2.waitKey(5) & 0xFF
+    if k == 27:
+        break
+#Destrying and releasing all resourses
+cv2.destroyAllWindows()
+cap.release()
