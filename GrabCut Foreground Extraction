@@ -1,0 +1,33 @@
+import numpy as np
+import cv2
+#from matplotlib import pyplot as plt
+
+#Loading the image
+img = cv2.imread('opencv-python-foreground-extraction-tutorial.jpg')
+#Declaring Mask
+mask = np.zeros(img.shape[:2],np.uint8)
+#Declaring Forground and Background Model
+bgdModel = np.zeros((1,65),np.float64)
+fgdModel = np.zeros((1,65),np.float64)
+
+#providing coordinates of rectangle
+rect = (161,79,150,150)
+#GrabCut Function with various parameters which is, input image, then the mask, then the rectangle for our main object,
+# the background model, foreground model, the amount of iterations to run, and what mode we are using
+cv2.grabCut(img,mask,rect,bgdModel,fgdModel,5,cv2.GC_INIT_WITH_RECT)
+#It will change the mask,0 and 2 pixels are converted to the background, where the 1 and 3 pixels are now the foreground
+mask2 = np.where((mask==2)|(mask==0),0,1).astype('uint8')
+#multiply with the input image and we get our final result
+img = img*mask2[:,:,np.newaxis]
+
+#Show the final image
+cv2.imshow('Final',img)
+
+#Show window untill you did't press any key
+cv2.waitKey(0)
+#Destroy all windows
+cv2.destroyAllWindows()
+
+#plt.imshow(img)
+#plt.colorbar()
+#plt.show()
