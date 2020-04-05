@@ -1,0 +1,27 @@
+import numpy as np
+import cv2
+
+#Reading Image
+img = cv2.imread('opencv-corner-detection-sample.jpg')
+#Converting image to Grayscale
+gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+#Converting to numpy array
+gray = np.float32(gray)
+
+#goodFeaturesToTrack() will detect corners, parameters are image,
+# max corners to detect,quality,minimum distance between corners
+corners = cv2.goodFeaturesToTrack(gray, 100, 0.01, 10)
+corners = np.int0(corners)
+
+#iterating through each corner, making a circle at each point that we think is a corner
+for corner in corners:
+    x, y = corner.ravel()
+    cv2.circle(img, (x, y), 3, 255, -1)
+
+#Show final Image
+cv2.imshow('Corner', img)
+
+#It will hold the window untill we did't press any key
+cv2.waitKey(0)
+#Destroy all windows
+cv2.destroyAllWindows()
