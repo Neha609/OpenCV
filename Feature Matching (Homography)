@@ -1,0 +1,31 @@
+import cv2
+import numpy as np
+
+#Loading Image
+img_rgb = cv2.imread('opencv-template-matching-python-tutorial.jpg')
+#Converting image into Grayscale
+img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
+
+#Loading Template
+template = cv2.imread('opencv-template-for-matching.jpg',0)
+#template shape
+w, h = template.shape[::-1]
+# Finding template in Actual image
+res = cv2.matchTemplate(img_gray,template,cv2.TM_CCOEFF_NORMED)
+#Declaring threshold it can be decided on the basis of outcomes
+#threshold = 0.8
+threshold = 0.7
+#If Threshold exeeds then location of matching template is found
+loc = np.where( res >= threshold)
+
+#Encircling that area which is found matched with our template via square
+for pt in zip(*loc[::-1]):
+    cv2.rectangle(img_rgb, pt, (pt[0] + w, pt[1] + h), (0,255,255), 2)
+
+#Show the final image with match found with template
+cv2.imshow('Detected',img_rgb)
+
+#Show window untill you did't press any key
+cv2.waitKey(0)
+#Destroy all windows
+cv2.destroyAllWindows()
