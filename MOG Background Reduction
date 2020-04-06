@@ -1,0 +1,28 @@
+import numpy as np
+import cv2
+
+#Start Capturing video
+cap = cv2.VideoCapture(0)
+#Creating an object of MOG which will subtract foreground from backgroud
+fgbg = cv2.createBackgroundSubtractorMOG2()
+
+#Creating frames to perform operation
+while (1):
+    ret, frame = cap.read()
+
+#Applying MOG on frames
+    fgmask = fgbg.apply(frame)
+
+#Showing original frame as well as MOG mask
+    cv2.imshow('fgmask', frame)
+    cv2.imshow('frame', fgmask)
+
+#Ending while loop
+    k = cv2.waitKey(30) & 0xff
+    if k == 27:
+        break
+
+#releasing window
+cap.release()
+#Destroying all windows
+cv2.destroyAllWindows()
